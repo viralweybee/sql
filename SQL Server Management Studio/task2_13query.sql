@@ -7,7 +7,7 @@
 --error in a sal*12 => incorret column name 
 
 --3. Write a query to determine the structure of the table 'DEPARTMENTS'
-select * from departments
+sp_help departments
 
 --4. Write a query to determine the unique Job IDs from the EMPLOYEES table.
 select distinct job_id from employees
