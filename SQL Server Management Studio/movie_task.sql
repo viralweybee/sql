@@ -196,12 +196,41 @@ where mov_id in (select mov_id from movie where mov_title='Annie Hall'))
 
  select d.dir_fname,d.dir_lname,g.gen_title,count(g.gen_id) from director d inner join movie_direction md on d.dir_id=md.dir_id inner join movie_genres mg on mg.mov_id=md.mov_id inner join genres g on g.gen_id=mg.gen_id
  group by d.dir_fname,d.dir_lname,g.gen_title
+ order by d.dir_fname, d.dir_lname
 
  --7.	write a SQL query to find the movies with year and genres. Return movie title, movie year and generic title.
 
- select m. from movie m inner join movie_genres mg on mg.mov_id=m.mov_id inner join genres g on g.gen_id=mg.gen_id
+ select m.mov_title,m.mov_year,g.gen_title from movie m inner join movie_genres mg on mg.mov_id=m.mov_id inner join genres g on g.gen_id=mg.gen_id
 
- 
+ --8.	write a SQL query to find all the movies with year, genres, and name of the director.
+ select m.mov_year,g.gen_title,d.dir_fname,d.dir_lname from movie m inner join movie_genres mg on mg.mov_id=m.mov_id inner join genres g on mg.gen_id=g.gen_id inner join movie_direction md on md.mov_id=m.mov_id inner join director d on md.dir_id=d.dir_id;
 
+ --9.	write a SQL query to find the movies released before 1st January 1989. Sort the result-set in descending order by date of release. Return movie title, release year, date of release, duration, and first and last name of the director
 
+ select m.mov_title,m.mov_year,m.mov_dt_rel,m.mov_time,d.dir_fname,d.dir_lname from movie m inner join movie_direction md on md.mov_id=m.mov_id inner join director d on d.dir_id=md.dir_id
+ where m.mov_dt_rel<'1989-01-01'
+ order by m.mov_dt_rel desc
 
+ --10. write a SQL query to compute the average time and count number of movies for each genre. Return genre title, average time and number of movies for each genre
+ select gen_id,count(mov_id) from movie_genres group by gen_id
+  select avg(m.mov_time),count(mg.mov_id),g.gen_title from movie_genres mg inner join movie m on m.mov_id=mg.mov_id inner join genres g on g.gen_id=mg.gen_id group by mg.gen_id,g.gen_title
+
+  --11. write a SQL query to find movies with the lowest duration. Return movie title, movie year, director first name, last name, actor first name, last name and role.
+  select m.mov_title,m.mov_year,d.dir_fname, d.dir_lname,a.act_fname,a.act_lname,mc.role from movie m inner join movie_direction md on m.mov_id=md.mov_id inner join director d on d.dir_id=md.dir_id inner join movie_cast mc on
+  mc.mov_id=m.mov_id inner join actor a on a.act_id=mc.act_id  where m.mov_time in (select min(mov_time) from movie);
+
+  --12.	write a SQL query to find those years when a movie received a rating of 3 or 4. Sort the result in increasing order on movie year. Return move year
+  select m.mov_year from movie m inner join rating r on m.mov_id = r.mov_id where r.rev_stars='3' or r.rev_stars='4' order by m.mov_year
+
+  --13.	write a SQL query to get the reviewer name, movie title, and stars in an order that reviewer name will come first, then by movie title, and lastly by number of stars.
+  select rv.rev_name,m.mov_title,r.rev_stars from movie m inner join rating r on m.mov_id =r.mov_id inner join reviewer rv on rv.rev_id=r.rev_id order by rv.rev_name,m.mov_title,r.rev_stars 
+
+  --14.	write a SQL query to find those movies that have at least one rating and received highest number of stars. Sort the result-set on movie title. Return movie title and maximum review stars.
+  select m.mov_title,r.rev_stars from movie m inner join rating r on r.mov_id=m.mov_id where r.num_o_ratings>1 and r.rev_stars =(select max(rev_stars) from rating)
+
+  --15.	write a SQL query to find those movies, which have received ratings. Return movie title, director first name, director last name and review stars.
+  select m.mov_title,d.dir_fname,d.dir_lname,r.rev_stars from movie m inner join rating r on r.mov_id=m.mov_id inner join movie_direction md on md.mov_id=m.mov_id inner join director d on d.dir_id=md.dir_id where r.rev_stars is not null
+
+  --16.	Write a query in SQL to find the movie title, actor first and last name, and the role for those movies where one or more actors acted in two or more movies
+	select m.mov_title from movie m inner join movie_cast mc on mc.mov_id=m.mov_id inner join  actor a on a.act_id=mc.act_id 
+	where a.act_id in (select act_id from movie_cast group by act_id having count(mov_id)>1)

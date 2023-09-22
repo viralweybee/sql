@@ -5,13 +5,13 @@
 --left join order_details o on c.customer_id=o.customer_id
 
 
---select * from [customer_details2];
+select * from [customer_details2];
 
 
 
 
 
-
+select * from jobs
 
 
 

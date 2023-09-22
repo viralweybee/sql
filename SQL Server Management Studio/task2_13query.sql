@@ -18,7 +18,7 @@ select employee_id,last_name,salary as oldsalary ,salary+(salary*15.5/100) as ne
 --6. Write a query to display the minimum, maximum, sum and average salary for each job type.
 select min(salary),max(salary),sum(salary),avg(salary) from employees
 
---7. The HR department needs to find the names and hire dates of all employees who were hired before their managers, along with their managersâ€™ names and hire dates.
+--7. The HR department needs to find the names and hire dates of all employees who were hired before their managers, along with their managers’ names and hire dates.
 select first_name ,hire_date from employees where hire_date <=  ( select max(hire_date) from employees where job_id='SA_MAN' ) --pending
 
 --8. Create a report for the HR department that displays employee last names, department numbers, and all the employees who work in the same department as a given employee.
@@ -37,7 +37,8 @@ select * from [salary more than department 60_1]
 select last_name ,salary from employees where manager_id = any (select employee_id from employees where last_name='king')
 
 --12. Write a query to display the list of department IDs for departments that do not contain the job Id ST_CLERK(Add this job ST_CLERK to Job table). Use SET Operator for this query
-	select distinct department_id from employees where DEPARTMENT_ID Except (select distinct department_id from employees where job_id='ST_CLERK');
+	select distinct department_id from employees where DEPARTMENT_ID in  (select DEPARTMENT_ID from employees where job_id !='ST_CLERK')
+	except (select distinct department_id from employees where job_id='ST_CLERK');
 --	SELECT DISTINCT department_id
 --FROM employees
 --WHERE department_id NOT IN (
