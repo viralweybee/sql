@@ -99,7 +99,7 @@ where rev_stars is null)
 select reviewer.rev_name,rating.rev_stars,movie.mov_title
 from movie,reviewer,rating 
 where movie.mov_id=rating.mov_id 
-and rating.rev_id=reviewer.rev_id
+and rating.rev_id=reviewer.rev_id and rev_stars is not null and num_o_ratings is not null
 order by reviewer.rev_name,movie.mov_title,rating.rev_stars
 
 --10.	write a SQL query to find those reviewers who rated more than one movie. Group the result set on reviewer’s name, movie title. Return reviewer’s name, movie title.

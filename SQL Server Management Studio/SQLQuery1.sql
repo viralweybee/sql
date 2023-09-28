@@ -8,4 +8,7 @@ select price from products order by price desc
 --insert into persons (lastname,firstname, age) values ('devmurari','viral',21);
 
 
- n  
+ select * from [report]
+ select * from [customer_details2]
+ select datepart(day,GETDATE())
+ select day(getdate())

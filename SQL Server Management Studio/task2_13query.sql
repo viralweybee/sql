@@ -19,10 +19,14 @@ select employee_id,last_name,salary as oldsalary ,salary+(salary*15.5/100) as ne
 select min(salary),max(salary),sum(salary),avg(salary) from employees
 
 --7. The HR department needs to find the names and hire dates of all employees who were hired before their managers, along with their managers’ names and hire dates.
-select first_name ,hire_date from employees where hire_date <=  ( select max(hire_date) from employees where job_id='SA_MAN' ) --pending
+select first_name ,hire_date from employees where hire_date <=  ( select max(hire_date) from employees where job_id='SA_MAN' ) 
 
 --8. Create a report for the HR department that displays employee last names, department numbers, and all the employees who work in the same department as a given employee.
-select e.last_name,d.DEPARTMENT_NAME,e.EMPLOYEE_ID from employees e inner join DEPARTMENTS d on e.DEPARTMENT_ID=d.DEPARTMENT_ID
+
+select e1.last_name,e2.last_name ,e1.DEPARTMENT_ID from employees e1 inner join employees e2 on e1.DEPARTMENT_ID=e2.DEPARTMENT_ID
+where e1.LAST_NAME!=e2.LAST_NAME
+
+
 
 --9. Find the highest, lowest, sum, and average salary of all employees. Label the columns Maximum, Minimum, Sum, and Average, respectively. Round your results to the nearest whole number.
 select Round(max(salary),0) as Maximum, Round(min(salary),0) as Minimum, Round(sum(salary),0) as sum ,Round(avg(salary),0)as average from employees
